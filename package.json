@@ -1,0 +1,51 @@
+{
+  "name": "pb-transform",
+  "version": "1.0.0",
+  "description": "Map an objects data to a new schema, helpful for middleware applications",
+  "main": "example.js",
+  "scripts": {
+    "build": "babel src -d lib --extensions '.ts'",
+    "prepack": "yarn build",
+    "test": "node test/test.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/emsoff/pb-transform"
+  },
+  "keywords": [
+    "transform",
+    "middleware",
+    "etl",
+    "node",
+    "api",
+    "json",
+    "schema"
+  ],
+  "author": "Justin Emsoff",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/emsoff/pb-transform/issues"
+  },
+  "homepage": "https://github.com/emsoff/pb-transform",
+  "dependencies": {
+    "@types/lodash": "^4.14.175",
+    "flat": "^5.0.2",
+    "lodash": "^4.17.15"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.14.8",
+    "@babel/core": "^7.14.8",
+    "@babel/plugin-transform-runtime": "^7.15.0",
+    "@babel/preset-env": "^7.14.8",
+    "babel-eslint": "^10.1.0",
+    "deep-freeze": "0.0.1",
+    "eslint": "^7.31.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-babel": "^5.3.1",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-prettier": "^3.4.0",
+    "prettier": "^2.3.2",
+    "tape": "^5.3.1"
+  }
+}
