@@ -13,23 +13,17 @@ var PbTransformer = function PbTransformer(data, mapping, transformations) {
   return {
     safeGetValue: function safeGetValue(obj, key) {
       if ((0, _lodash.isNil)(key)) {
-        return obj;
+        return null;
       }
 
       return (0, _lodash.get)(obj, key);
     },
     safeSetValue: function safeSetValue(obj, key, value) {
       if ((0, _lodash.isNil)(key)) {
-        return;
+        return null;
       }
 
       (0, _lodash.set)(obj, key, value);
-    },
-    postprocess: function postprocess(data, transformations) {
-      (0, _lodash.each)(transformations, (0, _lodash.bind)(function (method) {
-        this.safeSetValue(data, method.on, method.transformation(this.safeGetValue(data, method.on)));
-      }, this));
-      return data;
     },
     transform: function transform() {
       var _this = this;
@@ -37,11 +31,19 @@ var PbTransformer = function PbTransformer(data, mapping, transformations) {
       var transformed = {};
       var flattened = (0, _flat.flatten)(mapping);
       Object.keys(flattened).forEach(function (key) {
-        if (!(0, _lodash.isNil)(key) && !(0, _lodash.isNil)(flattened[key])) {
+        if (!(0, _lodash.isNil)(key) && !(0, _lodash.isNil)(_this.safeGetValue(data, flattened[key]))) {
           _this.safeSetValue(transformed, key, _this.safeGetValue(data, flattened[key]));
+        } else {
+          delete flattened[key];
         }
       });
       return transformed;
+    },
+    postprocess: function postprocess(data, transformations) {
+      (0, _lodash.each)(transformations, (0, _lodash.bind)(function (method) {
+        this.safeSetValue(data, method.on, method.transformation(this.safeGetValue(data, method.on)));
+      }, this));
+      return data;
     },
     run: function run() {
       return new Promise(function (resolve, reject) {

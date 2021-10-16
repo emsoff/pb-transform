@@ -5,15 +5,27 @@ const PbTransformer = (data, mapping, transformations) => {
     return {
         safeGetValue: function(obj, key) {
             if (isNil(key)) {
-                return obj;
+                return null;
             }
             return get(obj, key);
         },
         safeSetValue: function(obj, key, value) {
             if (isNil(key)) {
-                return;
+                return null;
             }
             set(obj, key, value)
+        },
+        transform: function() {
+            const transformed = {}
+            let flattened = flatten(mapping)            
+            Object.keys(flattened).forEach((key) => {
+                if( !isNil(key) && !isNil(this.safeGetValue(data, flattened[key]))) {
+                    this.safeSetValue(transformed, key, this.safeGetValue(data, flattened[key]))
+                } else {
+                    delete flattened[key]
+                }
+            });
+            return transformed
         },
         postprocess: function(data, transformations) {
             each(transformations, bind(function (method) {
@@ -25,16 +37,6 @@ const PbTransformer = (data, mapping, transformations) => {
                 }, this)
             );
             return data;
-        },
-        transform: function() {
-            const transformed = {}
-            let flattened = flatten(mapping)            
-            Object.keys(flattened).forEach((key) => {
-                if( !isNil(key) && !isNil(flattened[key])) {
-                    this.safeSetValue(transformed, key, this.safeGetValue(data, flattened[key]))
-                }
-            });
-            return transformed
         },
         run: function () {
             return new Promise(
