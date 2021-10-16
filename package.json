@@ -2,9 +2,9 @@
   "name": "pb-transform",
   "version": "1.0.0",
   "description": "Map an objects data to a new schema, helpful for middleware applications",
-  "main": "example.js",
+  "main": "index.js",
   "scripts": {
-    "build": "babel src -d lib --extensions '.ts'",
+    "build": "babel src -d ./ --extensions '.ts'",
     "prepack": "yarn build",
     "test": "node test/test.ts"
   },
